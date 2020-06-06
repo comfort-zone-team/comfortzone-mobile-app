@@ -1,2 +1,2 @@
-Yarn install
-expo start
+1) Yarn install
+2) expo start
