@@ -252,4 +252,25 @@ export default function EditMemberProfile({ navigation, route }) {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    // flex: 1,
+    flexDirection: 'row',
+    padding: 0,
+    paddingBottom: 60,
+  },
+  content: {
+    padding: 20,
+    width: '100%',
+  },
+  card: {
+    margin: 2,
+  },
+  footerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  footerControl: {
+    marginHorizontal: 2,
+  },
+});
