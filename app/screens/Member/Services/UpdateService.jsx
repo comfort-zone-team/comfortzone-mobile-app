@@ -2,29 +2,166 @@ import React, { useState, useEffect, useContext } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   TopNavigation,
+  TopNavigationAction,
   Divider,
   Layout,
+  Icon,
   Text,
   Button,
+  IndexPath,
+  Select,
+  SelectItem,
   Modal,
   Card,
 } from '@ui-kitten/components';
-
+import { StyleSheet, View, Image, Alert } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
+import * as ImagePicker from 'expo-image-picker';
 import { TextInput } from '../../../components/TextInput/TextInput';
 import {
   StringValidator,
   PhoneNumberValidator,
 } from '../../../components/validators/Validators';
 import WhiteSpace from '../../../components/Space/WhiteSpace';
+import { useAxios, UPLOADS_API_URL } from '../../../config/axios.config';
+import { AuthContext } from '../../../navigator/Navigator';
 import ActivityIndicatorOverlay from '../../../components/ActivityIndicator/ActivityIndicatorOverlay';
 import { ServiceCategories } from './../../../util/servicesCategories';
 import styles from './../../../navigator/styles';
 
 const categories = ServiceCategories;
+export default function UpdateMemberService({ navigation, route }) {
+  const { service } = route.params;
+  const [modelVisible, setModelVisible] = useState(false);
 
-export default function UpdateMemberService() {
+  const [title, setTitle] = useState(service.title);
+  const [mobile, setMobile] = useState(service.mobile);
+  const [address, setAddress] = useState(service.addess);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const index = categories.findIndex(({ value }) => value === service.category);
+  const [selectedIndex, setSelectedIndex] = useState(new IndexPath(index));
+  const [selectedCategory, setSelectedCategory] = useState(service.category);
+
+  useEffect(() => {
+    const selectedItem = categories[selectedIndex.row].value;
+    setSelectedCategory(selectedItem);
+  }, [selectedIndex]);
+
+  const renderTopBarLeft = (props) => (
+    <TopNavigationAction
+      {...props}
+      icon={(props) => <Icon {...props} name='arrow-back-outline' />}
+      onPress={() => navigation.goBack()}
+    />
+  );
+
+  const renderTopBarRight = (props) => (
+    <TopNavigationAction
+      {...props}
+      icon={(props) => <Icon {...props} name='trash-2-outline' fill='red' />}
+      onPress={() => setModelVisible(true)}
+    />
+  );
+
+  const openImagePickerAsync = async () => {
+    let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      Alert.alert('', 'Permission to access camera roll is required!');
+      return;
+    }
+
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({
+      base64: true,
+    });
+
+    if (pickerResult.cancelled === true) {
+      return;
+    }
+
+    setSelectedImage({
+      localUri: pickerResult.uri,
+      base64: pickerResult.base64,
+    });
+  };
+
+  const [{ loading, data, error }, updateService] = useAxios(
+    {
+      url: '/worker/service/update',
+      method: 'POST',
+    },
+    {
+      manual: true,
+    }
+  );
+
+  useEffect(() => {
+    if (data) {
+      Alert.alert('Success', 'Service Updated Successfully!');
+      navigation.navigate('Services');
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (error) {
+      const message = error.isAxiosError
+        ? error.response.data.message
+        : error.message;
+      Alert.alert('Error', message);
+    }
+  }, [error]);
+
+  const onServiceUpdate = () => {
+    updateService({
+      data: {
+        id: service._id,
+        title,
+        mobile,
+        address,
+        image: selectedImage ? selectedImage.base64 : null,
+        category: selectedCategory,
+      },
+    });
+  };
+
+  const [
+    { loading: deleting, error: deleteError, data: deleteData },
+    deleteService,
+  ] = useAxios(
+    {
+      url: '/member/service/delete',
+      method: 'POST',
+    },
+    {
+      manual: true,
+    }
+  );
+
+  useEffect(() => {
+    if (deleteData) {
+      Alert.alert('Success', 'Service Deleted Successfully!');
+      navigation.navigate('Services');
+    }
+  }, [deleteData]);
+
+  useEffect(() => {
+    if (deleteError) {
+      const message = deleteError.isAxiosError
+        ? deleteError.response.data.message
+        : deleteError.message;
+      Alert.alert('Error', message);
+    }
+  }, [deleteError]);
+
+  const onDeleteService = () => {
+    deleteService({
+      data: {
+        id: service._id,
+      },
+    });
+  };
+
   return (
     <SafeAreaView>
       <TopNavigation
@@ -70,6 +207,42 @@ export default function UpdateMemberService() {
             multiline={true}
           />
           <WhiteSpace />
+          <Select
+            label='Category'
+            selectedIndex={selectedIndex}
+            value={categories[selectedIndex.row].title}
+            onSelect={(index) => setSelectedIndex(index)}
+          >
+            {categories.map((type) => (
+              <SelectItem
+                title={type.title}
+                value={type.value}
+                key={type.value}
+              />
+            ))}
+          </Select>
+          <WhiteSpace />
+
+          <Divider />
+
+          {selectedImage && (
+            <View style={styles.thumbnailView}>
+              <Image
+                source={{ uri: selectedImage.localUri }}
+                style={styles.thumbnail}
+              />
+            </View>
+          )}
+
+          {!selectedImage && service.imagePath && (
+            <View style={styles.thumbnailView}>
+              <Image
+                source={{ uri: `${UPLOADS_API_URL}${service.imagePath}` }}
+                style={styles.thumbnail}
+              />
+            </View>
+          )}
+
           <Button
             appearance='outline'
             onPress={onServiceUpdate}
