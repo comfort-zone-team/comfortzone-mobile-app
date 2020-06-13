@@ -25,6 +25,40 @@ const EmptyView = () => (
   </View>
 );
 
+const Services = ({ services, onOrderSelected }) => {
+  return (
+    <View style={styles.services}>
+      {services.map(({ service, member, isCompleted }, index) => (
+        <TouchableOpacity onPress={() => onOrderSelected(services[index])}>
+          <View key={service._id} style={styles.serviceView}>
+            <View style={{ width: '40%', marginRight: 10 }}>
+              <Image
+                source={{
+                  uri: `${UPLOADS_API_URL}${service.imagePath}`,
+                }}
+                style={styles.image}
+              />
+            </View>
+            <View style={styles.serviceContent}>
+              <Text category='h6' style={{ fontWeight: 'bold' }}>
+                {service.title.toUpperCase()}
+              </Text>
+              <WhiteSpace />
+              <Text category='p1'>Member Name: {member.name}</Text>
+              <WhiteSpace />
+              <Text category='p1'>Member Phone #: {member.mobile}</Text>
+              <WhiteSpace />
+              <Text category='c1'>
+                Status: {isCompleted ? 'Completed' : 'Cancelled'}
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+};
+
 export default function WorkerOrdersHistory({ navigation }) {
   const { user } = useContext(AuthContext);
 
@@ -109,4 +143,42 @@ export default function WorkerOrdersHistory({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+    height: '100%',
+  },
+  emptyView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+  },
+  emptyViewText: {
+    textAlign: 'center',
+    padding: 10,
+    color: 'grey',
+  },
+  services: {
+    height: '100%',
+    marginBottom: 100,
+  },
+  serviceView: {
+    marginVertical: 10,
+    marginHorizontal: 10,
+    flexDirection: 'row',
+    elevation: 5,
+    backgroundColor: 'white',
+    padding: 20,
+  },
+  image: {
+    width: 120,
+    height: 120,
+    borderRadius: 120 / 2,
+    overflow: 'hidden',
+    borderWidth: 0.2,
+    borderColor: 'grey',
+  },
+  serviceContent: {
+    width: '60%',
+  },
+});
