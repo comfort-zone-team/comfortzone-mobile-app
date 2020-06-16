@@ -22,12 +22,33 @@ import {
   Card,
 } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Alert, View, ScrollView, RefreshControl } from 'react-native';
+import {
+  StyleSheet,
+  Alert,
+  View,
+  ScrollView,
+  RefreshControl,
+  Image,
+} from 'react-native';
 import { useAxios } from '../../../config/axios.config';
 import WhiteSpace from '../../../components/Space/WhiteSpace';
 import { Linking } from 'expo';
 import { AuthContext } from '../../../navigator/Navigator';
 import ActivityIndicatorOverlay from '../../../components/ActivityIndicator/ActivityIndicatorOverlay';
+
+const LogoutIcon = (props) => <Icon {...props} name='log-out' />;
+
+const MenuIcon = (props) => <Icon {...props} name='more-vertical' />;
+
+const EmptyView = () => (
+  <View style={styles.emptyView}>
+    <Image
+      source={require('./empty.png')}
+      style={{ width: '80%', resizeMode: 'contain' }}
+    />
+    <Text style={styles.emptyViewText}>No guards found.</Text>
+  </View>
+);
 
 const Sectors = ['1', '2', '3', '4'];
 const Blocks = ['A', 'B', 'C'];
@@ -351,3 +372,23 @@ export default function GuardsScreen({ navigation }) {
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    height: '100%',
+    padding: 20,
+  },
+  emptyView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+  },
+  emptyViewText: {
+    textAlign: 'center',
+    padding: 10,
+    color: 'grey',
+  },
+  backdrop: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+});
