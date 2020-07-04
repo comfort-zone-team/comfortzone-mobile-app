@@ -472,16 +472,20 @@ export const Navigator = () => {
       },
       signOut: async (role) => {
         if (role === 'member') {
-          const user = state.user;
+          const authString = await AsyncStorage.getItem('auth');
+          //   console.log('NG User:', user);
+          const auth = authString ? JSON.parse(authString) : null;
+          if (auth) {
+            const user = auth.user;
+            let token = null;
 
-          let token = null;
-
-          const { status } = await Permissions.getAsync(
-            Permissions.NOTIFICATIONS
-          );
-          if (status === 'granted') {
-            token = await Notifications.getExpoPushTokenAsync();
-            await RemoveNotificationToken(user._id, token);
+            const { status } = await Permissions.getAsync(
+              Permissions.NOTIFICATIONS
+            );
+            if (status === 'granted') {
+              token = await Notifications.getExpoPushTokenAsync();
+              await RemoveNotificationToken(user._id, token);
+            }
           }
         }
 

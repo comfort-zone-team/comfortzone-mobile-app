@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React, { useState, useEffect, useContext } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   TopNavigation,
   Divider,
@@ -13,21 +13,21 @@ import {
   SelectItem,
   Modal,
   Card,
-} from "@ui-kitten/components";
-import { StyleSheet, View, Image, Alert } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import * as ImagePicker from "expo-image-picker";
+} from '@ui-kitten/components';
+import { StyleSheet, View, Image, Alert } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import * as ImagePicker from 'expo-image-picker';
 
-import { TextInput } from "../../../components/TextInput/TextInput";
+import { TextInput } from '../../../components/TextInput/TextInput';
 import {
   StringValidator,
   PhoneNumberValidator,
-} from "../../../components/validators/Validators";
-import WhiteSpace from "../../../components/Space/WhiteSpace";
-import { useAxios, UPLOADS_API_URL } from "../../../config/axios.config";
-import { AuthContext } from "../../../navigator/Navigator";
-import ActivityIndicatorOverlay from "../../../components/ActivityIndicator/ActivityIndicatorOverlay";
-import { ServiceCategories } from "../../../util/servicesCategories";
+} from '../../../components/validators/Validators';
+import WhiteSpace from '../../../components/Space/WhiteSpace';
+import { useAxios, UPLOADS_API_URL } from '../../../config/axios.config';
+import { AuthContext } from '../../../navigator/Navigator';
+import ActivityIndicatorOverlay from '../../../components/ActivityIndicator/ActivityIndicatorOverlay';
+import { ServiceCategories } from '../../../util/servicesCategories';
 
 const categories = ServiceCategories;
 
@@ -52,7 +52,7 @@ export default function UpdateWorkerService({ navigation, route }) {
   const renderTopBarLeft = (props) => (
     <TopNavigationAction
       {...props}
-      icon={(props) => <Icon {...props} name="arrow-back-outline" />}
+      icon={(props) => <Icon {...props} name='arrow-back-outline' />}
       onPress={() => navigation.goBack()}
     />
   );
@@ -60,7 +60,7 @@ export default function UpdateWorkerService({ navigation, route }) {
   const renderTopBarRight = (props) => (
     <TopNavigationAction
       {...props}
-      icon={(props) => <Icon {...props} name="trash-2-outline" fill="red" />}
+      icon={(props) => <Icon {...props} name='trash-2-outline' fill='red' />}
       onPress={() => setModelVisible(true)}
     />
   );
@@ -69,7 +69,7 @@ export default function UpdateWorkerService({ navigation, route }) {
     let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      Alert.alert("", "Permission to access camera roll is required!");
+      Alert.alert('', 'Permission to access camera roll is required!');
       return;
     }
 
@@ -89,8 +89,8 @@ export default function UpdateWorkerService({ navigation, route }) {
 
   const [{ loading, data, error }, updateService] = useAxios(
     {
-      url: "/worker/service/update",
-      method: "POST",
+      url: '/worker/service/update',
+      method: 'POST',
     },
     {
       manual: true,
@@ -99,8 +99,8 @@ export default function UpdateWorkerService({ navigation, route }) {
 
   useEffect(() => {
     if (data) {
-      Alert.alert("Success", "Service Updated Successfully!");
-      navigation.navigate("Services");
+      Alert.alert('Success', 'Service Updated Successfully!');
+      navigation.navigate('Services');
     }
   }, [data]);
 
@@ -109,7 +109,7 @@ export default function UpdateWorkerService({ navigation, route }) {
       const message = error.isAxiosError
         ? error.response.data.message
         : error.message;
-      Alert.alert("Error", message);
+      Alert.alert('Error', message);
     }
   }, [error]);
 
@@ -131,8 +131,8 @@ export default function UpdateWorkerService({ navigation, route }) {
     deleteService,
   ] = useAxios(
     {
-      url: "/worker/service/delete",
-      method: "POST",
+      url: '/worker/service/delete',
+      method: 'POST',
     },
     {
       manual: true,
@@ -141,8 +141,8 @@ export default function UpdateWorkerService({ navigation, route }) {
 
   useEffect(() => {
     if (deleteData) {
-      Alert.alert("Success", "Service Deleted Successfully!");
-      navigation.navigate("Services");
+      Alert.alert('Success', 'Service Deleted Successfully!');
+      navigation.navigate('Services');
     }
   }, [deleteData]);
 
@@ -151,7 +151,7 @@ export default function UpdateWorkerService({ navigation, route }) {
       const message = deleteError.isAxiosError
         ? deleteError.response.data.message
         : deleteError.message;
-      Alert.alert("Error", message);
+      Alert.alert('Error', message);
     }
   }, [deleteError]);
 
@@ -166,8 +166,8 @@ export default function UpdateWorkerService({ navigation, route }) {
   return (
     <SafeAreaView>
       <TopNavigation
-        title="Update Service"
-        alignment="center"
+        title='Update Service'
+        alignment='center'
         accessoryLeft={renderTopBarLeft}
         accessoryRight={renderTopBarRight}
       />
@@ -175,42 +175,42 @@ export default function UpdateWorkerService({ navigation, route }) {
       <KeyboardAwareScrollView>
         <Layout style={styles.container}>
           <TextInput
-            key="title"
-            placeholder={"Enter Service Title"}
-            label={"Title"}
+            key='title'
+            placeholder={'Enter Service Title'}
+            label={'Title'}
             onChangeText={setTitle}
             validator={StringValidator}
-            errorString="Title is required!"
+            errorString='Title is required!'
             initialValue={service.title}
           />
           <WhiteSpace />
           <TextInput
-            key="mobile"
-            placeholder={"Enter Mobile Number"}
-            autoCompleteType="tel"
-            keyboardType="phone-pad"
-            label={"Mobile Number"}
+            key='mobile'
+            placeholder={'Enter Mobile Number'}
+            autoCompleteType='tel'
+            keyboardType='phone-pad'
+            label={'Mobile Number'}
             onChangeText={setMobile}
             validator={PhoneNumberValidator}
-            errorString="Please enter valid mobile number!"
+            errorString='Please enter valid mobile number!'
             initialValue={service.mobile}
           />
           <WhiteSpace />
           <TextInput
-            key="address"
-            type="text"
-            placeholder={"Enter Address"}
-            label={"Address"}
+            key='address'
+            type='text'
+            placeholder={'Enter Address'}
+            label={'Address'}
             onChangeText={setAddress}
             validator={StringValidator}
-            errorString="Address is required!"
+            errorString='Address is required!'
             initialValue={service.address}
             multiline={true}
           />
           <WhiteSpace />
 
           <Select
-            label="Category"
+            label='Category'
             selectedIndex={selectedIndex}
             value={categories[selectedIndex.row].title}
             onSelect={(index) => setSelectedIndex(index)}
@@ -246,8 +246,8 @@ export default function UpdateWorkerService({ navigation, route }) {
           )}
 
           <Button
-            appearance="outline"
-            status="basic"
+            appearance='outline'
+            status='basic'
             onPress={openImagePickerAsync}
           >
             Change Image
@@ -256,7 +256,7 @@ export default function UpdateWorkerService({ navigation, route }) {
           <WhiteSpace size={2} />
 
           <Button
-            appearance="outline"
+            appearance='outline'
             onPress={onServiceUpdate}
             disabled={!title || !mobile || !address || !selectedCategory}
           >
@@ -264,11 +264,11 @@ export default function UpdateWorkerService({ navigation, route }) {
           </Button>
           <ActivityIndicatorOverlay
             visible={loading}
-            text={"Updating service..."}
+            text={'Updating service...'}
           />
           <ActivityIndicatorOverlay
             visible={deleting}
-            text={"Deleting service..."}
+            text={'Deleting service...'}
           />
           <Modal
             visible={modelVisible}
@@ -276,28 +276,28 @@ export default function UpdateWorkerService({ navigation, route }) {
             onBackdropPress={() => setModelVisible(false)}
           >
             <Card disabled={true}>
-              <Text style={{ textAlign: "center" }}>
+              <Text style={{ textAlign: 'center' }}>
                 Do you confirm deleting this service?
               </Text>
               <WhiteSpace size={2} />
               <View
                 style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "center",
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
                 }}
               >
                 <Button
                   onPress={() => setModelVisible(false)}
-                  status="basic"
-                  style={{ width: "40%" }}
+                  status='basic'
+                  style={{ width: '40%' }}
                 >
                   No
                 </Button>
                 <Button
                   onPress={onDeleteService}
-                  style={{ width: "40%" }}
-                  status="danger"
+                  style={{ width: '40%' }}
+                  status='danger'
                 >
                   Yes
                 </Button>
@@ -310,7 +310,7 @@ export default function UpdateWorkerService({ navigation, route }) {
   );
 }
 
-const styles = StyleSheet.create({
+StyleSheet.create({
   container: {
     padding: 20,
     paddingBottom: 70,
@@ -318,13 +318,13 @@ const styles = StyleSheet.create({
   thumbnail: {
     width: 200,
     height: 200,
-    resizeMode: "contain",
-    alignSelf: "center",
+    resizeMode: 'contain',
+    alignSelf: 'center',
   },
   thumbnailView: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   backdrop: {
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
 });

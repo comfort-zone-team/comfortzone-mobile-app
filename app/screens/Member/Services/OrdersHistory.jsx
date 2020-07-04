@@ -25,6 +25,40 @@ const EmptyView = () => (
   </View>
 );
 
+const Services = ({ services, onOrderSelected }) => {
+  return (
+    <View style={styles.services}>
+      {services.map(({ service, member, isCompleted }, index) => (
+        <TouchableOpacity onPress={() => onOrderSelected(services[index])}>
+          <View key={service._id} style={styles.serviceView}>
+            <View style={{ width: '40%', marginRight: 10 }}>
+              <Image
+                source={{
+                  uri: `${UPLOADS_API_URL}${service.imagePath}`,
+                }}
+                style={styles.image}
+              />
+            </View>
+            <View style={styles.serviceContent}>
+              <Text category='h6' style={{ fontWeight: 'bold' }}>
+                {service.title.toUpperCase()}
+              </Text>
+              <WhiteSpace />
+              <Text category='p1'>Member Name: {member.name}</Text>
+              <WhiteSpace />
+              <Text category='p1'>Member Phone #: {member.mobile}</Text>
+              <WhiteSpace />
+              <Text category='c1'>
+                Status: {isCompleted ? 'Completed' : 'Cancelled'}
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+};
+
 export default function MyOrdersHistory({ navigation }) {
   const { user } = useContext(AuthContext);
 

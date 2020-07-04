@@ -3,9 +3,9 @@ import { makeUseAxios } from 'axios-hooks';
 import { AsyncStorage } from 'react-native';
 import Axios from 'axios';
 
-const API_URL = 'http://192.168.10.7:5000/v2/mobile';
+const API_URL = 'http://192.168.10.8:5000/v2/mobile';
 
-export const UPLOADS_API_URL = 'http://192.168.10.7:5000/';
+export const UPLOADS_API_URL = 'http://192.168.10.8:5000/';
 
 export const useAxios = makeUseAxios({
   axios: axios.create({ baseURL: API_URL }),

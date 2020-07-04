@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   TopNavigation,
@@ -21,7 +20,6 @@ import {
   Modal,
   Card,
 } from '@ui-kitten/components';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   StyleSheet,
   Alert,

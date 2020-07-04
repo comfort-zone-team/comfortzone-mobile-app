@@ -20,6 +20,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AuthContext } from '../../../navigator/Navigator';
 import * as Location from 'expo-location';
+import * as TaskManager from 'expo-task-manager';
 import MapView from 'react-native-maps';
 import { useAxios, updateRideRoute } from '../../../config/axios.config';
 import ActivityIndicatorOverlay from '../../../components/ActivityIndicator/ActivityIndicatorOverlay';
@@ -299,4 +300,26 @@ export default function DriverHomeScreen({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  mapStyle: {
+    width: '100%',
+    height: '95%',
+  },
+});
+TaskManager.defineTask(
+  RIDE_TRACK_NAME,
+  async ({ data: { locations }, error }) => {
+    if (error) {
+      console.log('Error: ', error.message);
+      return;
+    }
+    const authString = await AsyncStorage.getItem('auth');
+    const auth = JSON.parse(authString);
+
+    const driverID = auth.user._id;
+
+    updateRideRoute(driverID, locations);
+
+    console.log('Received new locations', locations);
+  }
+);

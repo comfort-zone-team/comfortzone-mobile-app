@@ -28,6 +28,16 @@ import { useAxios } from '../../../config/axios.config';
 
 const DriverIcon = (props) => <Icon {...props} name='car-outline' />;
 
+const EmptyView = () => (
+  <View style={styles.emptyView}>
+    <Image
+      source={require('./empty.png')}
+      style={{ width: '80%', resizeMode: 'contain' }}
+    />
+    <Text style={styles.emptyViewText}>No drivers found.</Text>
+  </View>
+);
+
 export default function MemberDriversList({ navigation }) {
   const [{ loading, data, error }, refetch] = useAxios(
     {
@@ -105,6 +115,7 @@ export default function MemberDriversList({ navigation }) {
       />
       <Divider />
       <Layout style={styles.container}>
+        {!loading && data && data.drivers.length === 0 && <EmptyView />}
         {loading && (
           <View style={styles.spinnerView}>
             <Spinner />
@@ -132,4 +143,29 @@ export default function MemberDriversList({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    height: '100%',
+    backgroundColor: '#f7f8fa',
+  },
+  emptyView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+  },
+  spinnerView: {
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  contentContainer: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
+  item: {
+    marginVertical: 4,
+  },
+  list: {
+    padding: 10,
+    paddingBottom: 120,
+  },
+});

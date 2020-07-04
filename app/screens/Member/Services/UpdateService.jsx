@@ -298,7 +298,7 @@ export default function UpdateMemberService({ navigation, route }) {
   );
 }
 
-const styles = StyleSheet.create({
+StyleSheet.create({
   container: {
     padding: 20,
     paddingBottom: 70,
