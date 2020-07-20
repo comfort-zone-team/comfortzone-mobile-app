@@ -214,15 +214,7 @@ export default function UpdateWorkerService({ navigation, route }) {
             selectedIndex={selectedIndex}
             value={categories[selectedIndex.row].title}
             onSelect={(index) => setSelectedIndex(index)}
-          >
-            {categories.map((type) => (
-              <SelectItem
-                title={type.title}
-                value={type.value}
-                key={type.value}
-              />
-            ))}
-          </Select>
+          ></Select>
           <WhiteSpace />
 
           <Divider />
@@ -310,7 +302,7 @@ export default function UpdateWorkerService({ navigation, route }) {
   );
 }
 
-StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     padding: 20,
     paddingBottom: 70,

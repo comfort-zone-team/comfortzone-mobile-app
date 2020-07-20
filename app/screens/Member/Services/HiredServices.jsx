@@ -164,9 +164,9 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   image: {
-    width: 120,
-    height: 120,
-    borderRadius: 120 / 2,
+    width: 110,
+    height: 110,
+    borderRadius: 110 / 2,
     overflow: 'hidden',
     borderWidth: 0.2,
     borderColor: 'grey',

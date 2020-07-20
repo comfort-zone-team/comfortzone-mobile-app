@@ -212,15 +212,8 @@ export default function UpdateMemberService({ navigation, route }) {
             selectedIndex={selectedIndex}
             value={categories[selectedIndex.row].title}
             onSelect={(index) => setSelectedIndex(index)}
-          >
-            {categories.map((type) => (
-              <SelectItem
-                title={type.title}
-                value={type.value}
-                key={type.value}
-              />
-            ))}
-          </Select>
+          ></Select>
+
           <WhiteSpace />
 
           <Divider />

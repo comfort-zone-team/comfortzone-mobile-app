@@ -34,7 +34,6 @@ import DriverHomeScreen from '../screens/Driver/Home/HomeScreen';
 import WorkerHomeScreen from '../screens/Worker/Home/HomeScreen';
 import NewPassword from '../screens/ForgotPassword/NewPassword/NewPassword';
 import Verification from '../screens/ForgotPassword/Verification/Verification';
-
 import styles from './styles';
 import WorkerProfileScreen from '../screens/Worker/Profile/ProfileScreen';
 import EditWorkerProfile from '../screens/Worker/Profile/EditProfile';

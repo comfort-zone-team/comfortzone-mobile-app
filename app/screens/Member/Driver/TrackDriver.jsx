@@ -66,14 +66,6 @@ export default function MemberTrackDriver({ navigation, route }) {
   );
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      refetch();
-    });
-
-    return unsubscribe;
-  }, [navigation]);
-
-  useEffect(() => {
     if (data) {
       console.log('Updated Ride: ', data.ride);
       const { ride } = data;
